@@ -59,13 +59,13 @@ class Drunk():
                     random_num = 1
                     
                 if random_num < 0.25 or closest_home_y > new_y:
-                    new_y = (new_y + self.speed) % len(self.town)
+                    new_y = (self.y + self.speed) % len(self.town)
                 elif random_num < 0.5 or closest_home_y < new_y:
-                    new_y = (new_y - self.speed) % len(self.town)
+                    new_y = (self.y - self.speed) % len(self.town)
                 elif random_num < 0.75 or closest_home_x > new_x:
-                    new_x = (new_x + self.speed) % len(self.town[0])
+                    new_x = (self.x + self.speed) % len(self.town[0])
                 else:
-                    new_x = (new_x - self.speed) % len(self.town[0])                
+                    new_x = (self.x - self.speed) % len(self.town[0])                
                 
                 
                 # Update x and y if they are not building co-ordinates
