@@ -7,7 +7,7 @@ Created on Tue Sep 28 14:23:02 2021
 import random
 
 class Drunk():
-    def __init__(self, id, x, y, town, building_coords):
+    def __init__(self, id, x, y, town, building_coords, drunk_level):
         self.id = id
         self._x = x
         self._y = y
@@ -18,7 +18,8 @@ class Drunk():
         self.other_building_coords = [x for l in self.building_coords.values()\
                                      for x in l if x not in self.home_coords]
         self.history = []
-        self.drunk_level = 250
+        self.max_drunk_level = drunk_level
+        self.drunk_level = drunk_level
         self.speed = 1
         
     def get_x(self):
@@ -86,12 +87,11 @@ class Drunk():
     def sober_up(self):
         if ((self.x, self.y) in self.history) and (self.drunk_level > 0):
             self.drunk_level -= 1
-            if self.drunk_level <= 75:
+            if self.drunk_level <= self.max_drunk_level / 2:
                 self.speed = 2
-            elif self.drunk_level <= 50:
+            elif self.drunk_level <= self.max_drunk_level/ 4:
                 self.speed = 3
-            elif self.drunk_level <= 25:
-                self.speed = 4
+                
         self.history.append((self.x, self.y))
             
             

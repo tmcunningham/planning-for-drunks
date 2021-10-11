@@ -12,6 +12,7 @@ import operator
 import drunksframework
 
 num_of_moves = 500
+drunk_level = 250
 
 fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
 fig.add_axes([0, 0, 1, 1])
@@ -66,7 +67,8 @@ for id in range(10, 260, 10):
                                         x = pub_door_x, 
                                         y = pub_door_y,
                                         town = town,
-                                        building_coords = building_coords))
+                                        building_coords = building_coords,
+                                        drunk_level = drunk_level))
 
 carry_on = True    
 
