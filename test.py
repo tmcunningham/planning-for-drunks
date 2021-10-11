@@ -55,12 +55,14 @@ drunks = []
 
 for id in range(10, 260, 10):
     drunks.append(drunksframework.Drunk(id = id, 
+                                        #x = building_coords[20][0][0],                                        
+                                        #y = building_coords[20][0][1],
                                         x = pub_door_x, 
                                         y = pub_door_y,
                                         town = town,
                                         building_coords = building_coords))
 
-for i in range(2000):
+for i in range(50000):
     for j in range(len(drunks)):
         drunks[j].move()
         

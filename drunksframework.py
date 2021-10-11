@@ -15,6 +15,8 @@ class Drunk():
         self.building_coords = building_coords
         self.is_home = False
         self.home_coords = building_coords[id]
+        self.other_building_coords = [x for l in self.building_coords.values() \
+                                     for x in l if x not in self.home_coords]
         
     def get_x(self):
         return self._x
@@ -40,23 +42,21 @@ class Drunk():
             
             # Call random once so using the same random number - noticed a bug
             random_num = random.random()
-            
-            #Give drunk a random speed
-            speed = random.randint(1,10)
-            
+                       
             if random_num < 0.25:
-                new_y = (new_y + speed) % len(self.town)
+                new_y = (new_y + 2) % len(self.town)
             elif random_num < 0.5:
-                new_y = (new_y - speed) % len(self.town)
+                new_y = (new_y - 2) % len(self.town)
             elif random_num < 0.75:
-                new_x = (new_x + speed) % len(self.town[0])
+                new_x = (new_x + 2) % len(self.town[0])
             else:
-                new_x = (new_x - speed) % len(self.town[0])
+                new_x = (new_x - 2) % len(self.town[0])
+            
             
             # Update x and y if they are not building co-ordinates
             # This is currently really slowing everything down
-            if (new_x, new_y) not in \
-            [x for l in self.building_coords.values() for x in l]:
+                        
+            if (new_x, new_y) not in self.other_building_coords:
                 (self.x, self.y) = new_x, new_y
             
             # Add one to environment to show route taken
