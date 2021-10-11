@@ -41,14 +41,17 @@ class Drunk():
             # Call random once so using the same random number - noticed a bug
             random_num = random.random()
             
+            #Give drunk a random speed
+            speed = random.randint(1,10)
+            
             if random_num < 0.25:
-                new_y = (new_y + 1) % len(self.town)
+                new_y = (new_y + speed) % len(self.town)
             elif random_num < 0.5:
-                new_y = (new_y - 1) % len(self.town)
+                new_y = (new_y - speed) % len(self.town)
             elif random_num < 0.75:
-                new_x = (new_x + 1) % len(self.town[0])
+                new_x = (new_x + speed) % len(self.town[0])
             else:
-                new_x = (new_x - 1) % len(self.town[0])
+                new_x = (new_x - speed) % len(self.town[0])
             
             # Update x and y if they are not building co-ordinates
             # This is currently really slowing everything down
