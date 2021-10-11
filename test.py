@@ -6,9 +6,15 @@ Created on Mon Sep 27 15:19:45 2021
 """
 
 import csv
-import matplotlib
+import matplotlib.pyplot
+import matplotlib.animation
 import operator
 import drunksframework
+
+num_of_moves = 500
+
+fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
+fig.add_axes([0, 0, 1, 1])
 
 with open("drunk.plan", newline = "") as f:
     reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
@@ -62,24 +68,44 @@ for id in range(10, 260, 10):
                                         town = town,
                                         building_coords = building_coords))
 
-for i in range(100):
+carry_on = True    
+
+def update(frame_number):
+    global carry_on
+    fig.clear()
+    
+    # Move drunks
     for j in range(len(drunks)):
+        #print(drunks[j].x)
         drunks[j].move()
         drunks[j].sober_up()
         
-    if all([drunk.is_home for drunk in drunks]):
-        print("All drunks home in " + str(i) + " moves.")
-        break
-    
-print(str(sum([drunk.is_home for drunk in drunks])) + " drunks got home.")
-
-        #print(drunks[j].x)
         
-matplotlib.pyplot.imshow(town)
-for j in range(len(drunks)):
-    matplotlib.pyplot.scatter(drunks[j].x, drunks[j].y)
-matplotlib.pyplot.show()
+    # Plot drunks   
+    matplotlib.pyplot.imshow(town)
+    for j in range(len(drunks)):
+        matplotlib.pyplot.scatter(drunks[j].x, drunks[j].y)
+    matplotlib.pyplot.show()
+        
+    if all([drunk.is_home for drunk in drunks]):
+        print("All drunks home in " + str(frame_number) + " moves.")
+        carry_on = False
 
+
+def gen_function():
+    global carry_on
+    i = 0
+    while (i < num_of_moves) & (carry_on):
+        yield i
+        i += 1
+    else:
+        carry_on = False
+        print(str(sum([drunk.is_home for drunk in drunks])) + " drunks got home.")
+
+animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, 
+                                               repeat = False, 
+                                               frames = gen_function())    
+matplotlib.pyplot.show()        
 
 
 """

@@ -18,7 +18,7 @@ class Drunk():
         self.other_building_coords = [x for l in self.building_coords.values()\
                                      for x in l if x not in self.home_coords]
         self.history = []
-        self.drunk_level = 100
+        self.drunk_level = 250
         self.speed = 1
         
     def get_x(self):
@@ -77,7 +77,7 @@ class Drunk():
             
             # Add one to environment to show route taken
             # If drunk doesn't move, will still add
-            self.town[self.y][self.x] += 1
+            self.town[self.y][self.x] += 3
             
             # If reached one of home coordinates, set to be at home
             if (self.x, self.y) in self.home_coords:
