@@ -62,9 +62,10 @@ for id in range(10, 260, 10):
                                         town = town,
                                         building_coords = building_coords))
 
-for i in range(50000):
+for i in range(100):
     for j in range(len(drunks)):
         drunks[j].move()
+        drunks[j].sober_up()
         
     if all([drunk.is_home for drunk in drunks]):
         print("All drunks home in " + str(i) + " moves.")
