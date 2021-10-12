@@ -11,7 +11,7 @@ import matplotlib.animation
 import operator
 import drunksframework
 
-num_of_moves = 1000
+num_of_moves = 2000
 drunk_level = 300
 
 fig = matplotlib.pyplot.figure(figsize = (7,7))
@@ -101,13 +101,12 @@ def gen_function():
         yield i
         i += 1
     else:
-        carry_on = False
         print(str(sum([drunk.is_home for drunk in drunks])) + " drunks got home.")
 
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, 
                                                repeat = False, 
-                                               frames = gen_function())    
-matplotlib.pyplot.show()        
+                                               frames = 2000)    
+matplotlib.pyplot.show()      
 
 
 """
