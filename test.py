@@ -60,7 +60,7 @@ for id in range(10, 260, 10):
                                         town = town,
                                         building_coords = building_coords))
 
-for i in range(20000):
+for i in range(10000):
     for j in range(len(drunks)):
         drunks[j].move()
         

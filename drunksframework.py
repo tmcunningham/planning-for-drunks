@@ -50,11 +50,13 @@ class Drunk():
             else:
                 new_x = (new_x - 1) % len(self.town[0])
             
+            
             # Update x and y if they are not building co-ordinates
             # This is currently really slowing everything down
             if (new_x, new_y) not in \
             [x for l in self.building_coords.values() for x in l]:
                 (self.x, self.y) = new_x, new_y
+            
             
             # Add one to environment to show route taken
             self.town[self.y][self.x] += 1
