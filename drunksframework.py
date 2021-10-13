@@ -15,8 +15,8 @@ class Drunk():
         self.building_coords = building_coords
         self.is_home = False
         self.home_coords = building_coords[id]
-        self.other_building_coords = [x for l in self.building_coords.values()\
-                                     for x in l if x not in self.home_coords]
+        self.other_building_coords = set([x for l in self.building_coords.values()\
+                                          for x in l if x not in self.home_coords])
         self.history = []
         self.max_drunk_level = drunk_level
         self.drunk_level = drunk_level
@@ -41,43 +41,117 @@ class Drunk():
     def move(self):
         # If not already at home, move up down left or right at random
         if not self.is_home:
-            (new_x, new_y) = self.x, self.y
             
-            while True:
-                if self.drunk_level > 0:
-                    # Call random once so using the same random number - noticed a bug
-                    random_num = random.random()
-                    closest_home_y = new_y
-                    closest_home_x = new_x
-                    
+            
+            """
+            if self.drunk_level > 0:
+                random_num = random.random()
+                        
+                if random_num < 0.25:
+                    self.y = (self.y + self.speed) % len(self.town)
+                elif random_num < 0.5:
+                    self.y = (self.y - self.speed) % len(self.town)
+                elif random_num < 0.75:
+                    self.x = (self.x + self.speed) % len(self.town[0])
                 else:
+                    self.x = (self.x - self.speed) % len(self.town[0])
+            
+            else:
                     # If drunk level == 0 set closest home coords
                     closest_home_y = min([t[1] for t in self.home_coords],
-                                         key = lambda y: abs(y - new_y))   
+                                         key = lambda y: abs(y - self.y))   
                     closest_home_x = min([t[0] for t in self.home_coords],
-                                         key = lambda x: abs(x - new_x))
-                    random_num = 1
-                    
-                if random_num < 0.25 or closest_home_y > new_y:
+                                         key = lambda x: abs(x - self.x))
+                   
+                    if  closest_home_y > self.y:
+                        self.y = (self.y + self.speed) % len(self.town)
+                    elif closest_home_y < self.y:
+                        self.y = (self.y - self.speed) % len(self.town)
+                    elif closest_home_x > self.x:
+                        self.x = (self.x + self.speed) % len(self.town[0])
+                    else:
+                        self.x = (self.x - self.speed) % len(self.town[0])
+            
+            if 
+        
+            
+            """
+            if self.drunk_level > 0:
+                # Call random once so using the same random number - noticed a bug
+                random_num = random.random()
+                
+                if random_num < 0.25:
                     new_y = (self.y + self.speed) % len(self.town)
-                elif random_num < 0.5 or closest_home_y < new_y:
+                    new_x = self.x
+                elif random_num < 0.5:
                     new_y = (self.y - self.speed) % len(self.town)
-                elif random_num < 0.75 or closest_home_x > new_x:
+                    new_x = self.x
+                elif random_num < 0.75:
                     new_x = (self.x + self.speed) % len(self.town[0])
+                    new_y = self.y
                 else:
                     new_x = (self.x - self.speed) % len(self.town[0])                
+                    new_y = self.y
                 
                 
-                # Update x and y if they are not building co-ordinates
-                # This is currently really slowing everything down
-                            
-                if (new_x, new_y) not in self.other_building_coords:
-                    break
-                    
-            (self.x, self.y) = new_x, new_y
+                
+            else:
+            
+                # If drunk level == 0 set closest home coords
+                closest_home_y = min([t[1] for t in self.home_coords],
+                                     key = lambda y: abs(y - self.y))   
+                closest_home_x = min([t[0] for t in self.home_coords],
+                                     key = lambda x: abs(x - self.x))
+                
+                #rand_home_coord = random.choice(self.home_coords)
+                if random.random() < 0.5:
+                    if  closest_home_y > self.y:
+                       new_y = (self.y + self.speed) % len(self.town)
+                       new_x = self.x
+                    elif closest_home_y < self.y:
+                        new_y = (self.y - self.speed) % len(self.town)
+                        new_x = self.x
+                    if closest_home_x > self.x:
+                        new_x = (self.x + self.speed) % len(self.town[0])
+                        new_y = self.y
+                    else:
+                        new_x = (self.x - self.speed) % len(self.town[0])
+                        new_y = self.y
+                else:   
+                    if closest_home_x > self.x:
+                        new_x = (self.x + self.speed) % len(self.town[0])
+                        new_y = self.y
+                    elif closest_home_x < self.x:
+                        new_x = (self.x - self.speed) % len(self.town[0])
+                        new_y = self.y
+                    elif  closest_home_y > self.y:
+                       new_y = (self.y + self.speed) % len(self.town)
+                       new_x = self.x
+                    else:
+                        new_y = (self.y - self.speed) % len(self.town)
+                        new_x = self.x
             
             
-            # Add one to environment to show route taken
+            # Update x and y if they are not building co-ordinates
+            # If they are, start to go around the building
+                        
+            if (new_x, new_y) not in self.other_building_coords:
+                (self.x, self.y) = new_x, new_y
+            elif (self.x + self.speed % len(self.town[0]), self.y) in self.other_building_coords:
+                (self.x, self.y) = (self.x, (self.y + self.speed) % len(self.town))
+            elif (self.x - self.speed % len(self.town[0]), self.y) in self.other_building_coords:
+                (self.x, self.y) = (self.x, (self.y - self.speed) % len(self.town))
+            elif (self.x, (self.y + self.speed) % len(self.town)) in self.other_building_coords:
+                (self.x, self.y) = (self.x + self.speed % len(self.town[0]), self.y)
+            else:
+                (self.x, self.y) = (self.x - self.speed % len(self.town[0]), self.y)  
+                
+                
+                
+            
+            
+            
+            # Add to environment to show route taken
             # If drunk doesn't move, will still add
             self.town[self.y][self.x] += 3
             

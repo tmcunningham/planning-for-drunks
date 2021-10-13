@@ -6,12 +6,12 @@ Created on Mon Sep 27 15:19:45 2021
 """
 
 import csv
-import matplotlib
-import matplotlib.animation
+import matplotlib.pyplot
 import operator
 import drunksframework
+import random
 
-num_of_moves = 2000
+num_of_moves = 50000
 drunk_level = 300
 
 fig = matplotlib.pyplot.figure(figsize = (7,7))
@@ -31,7 +31,7 @@ with open("drunk.plan", newline = "") as f:
 #len(town[0])
 
 # Plot data        
-matplotlib.pyplot.imshow(town)
+# matplotlib.pyplot.imshow(town)
 
 #Create empty dictionary to collect building co-ordinates
 building_coords = {}
@@ -50,22 +50,32 @@ for n in [1, *range(10, 260, 10)]:
                 building_coords[building_name].append((x, y))
                           
 
-pub_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1]
-pub_door_x = min(building_coords["pub"], key = operator.itemgetter(0))[0]
+front_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1]
+front_door_x = min(building_coords["pub"], key = operator.itemgetter(0))[0]
 
-pub_door_coords = (pub_door_x, pub_door_y)
+front_door_coords = (front_door_x, front_door_y)
 
-if pub_door_coords not in building_coords["pub"]:
+back_door_y = max(building_coords["pub"], key = operator.itemgetter(1))[1]
+back_door_x = max(building_coords["pub"], key = operator.itemgetter(0))[0]
+
+back_door_coords = (back_door_x, back_door_y)
+
+
+if front_door_coords not in building_coords["pub"] or \
+    back_door_coords not in building_coords["pub"]:
     print("Pub door could not be found")
               
 drunks = []
 
 for id in range(10, 260, 10):
+    pub_door_coords = random.choice([front_door_coords, back_door_coords])
+    
+    
     drunks.append(drunksframework.Drunk(id = id, 
                                         #x = building_coords[20][0][0],                                        
                                         #y = building_coords[20][0][1],
-                                        x = pub_door_x, 
-                                        y = pub_door_y,
+                                        x = pub_door_coords[0],
+                                        y = pub_door_coords[1],
                                         town = town,
                                         building_coords = building_coords,
                                         drunk_level = drunk_level))
@@ -77,21 +87,20 @@ def update(frame_number):
     fig.clear()
     
     # Move drunks
-    for j in range(len(drunks)):
+    for drunk in drunks:
         #print(drunks[j].x)
-        drunks[j].move()
-        drunks[j].sober_up()
+        drunk.move()
+        drunk.sober_up()
         
         
     # Plot drunks   
     matplotlib.pyplot.imshow(town)
-    for j in range(len(drunks)):
-        matplotlib.pyplot.scatter(drunks[j].x, drunks[j].y)
-    matplotlib.pyplot.show()
+    for drunk in drunks:
+        matplotlib.pyplot.scatter(drunk.x, drunk.y)
         
     if all([drunk.is_home for drunk in drunks]):
-        print("All drunks home in " + str(frame_number) + " moves.")
         carry_on = False
+        print("All drunks home in " + str(frame_number) + " moves.")
 
 
 def gen_function():
@@ -105,9 +114,10 @@ def gen_function():
 
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, 
                                                repeat = False, 
-                                               frames = 2000)    
-matplotlib.pyplot.show()      
+                                               frames = gen_function())
 
+
+matplotlib.pyplot.show()      
 
 """
 # Plot the pub to verify it is larger than other buildings
