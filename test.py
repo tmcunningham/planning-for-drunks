@@ -6,13 +6,14 @@ Created on Mon Sep 27 15:19:45 2021
 """
 
 import csv
+import matplotlib.animation
 import matplotlib.pyplot
 import operator
 import drunksframework
 import random
 
 num_of_moves = 50000
-drunk_level = 10
+drunk_level = 500
 
 fig = matplotlib.pyplot.figure(figsize = (7,7))
 fig.add_axes([0, 0, 1, 1])
@@ -50,21 +51,16 @@ for n in [1, *range(10, 260, 10)]:
                 building_coords[building_name].append((x, y))
                           
 
-front_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1]
-front_door_x = min(building_coords["pub"], key = operator.itemgetter(0))[0]
+front_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1] - 1
+front_door_x = min(building_coords["pub"], key = operator.itemgetter(0))[0] - 1
 
 front_door_coords = (front_door_x, front_door_y)
 
-back_door_y = max(building_coords["pub"], key = operator.itemgetter(1))[1]
-back_door_x = max(building_coords["pub"], key = operator.itemgetter(0))[0]
+back_door_y = max(building_coords["pub"], key = operator.itemgetter(1))[1] + 1
+back_door_x = max(building_coords["pub"], key = operator.itemgetter(0))[0] + 1
 
 back_door_coords = (back_door_x, back_door_y)
-
-
-if front_door_coords not in building_coords["pub"] or \
-    back_door_coords not in building_coords["pub"]:
-    print("Pub door could not be found")
-              
+             
 drunks = []
 
 for id in range(10, 260, 10):
@@ -91,9 +87,11 @@ def update(frame_number):
         #print(drunks[j].x)
         drunk.move()
         drunk.sober_up()
-        
-    print(drunks[5].x)
-    print(drunks[5].y)    
+        #if (drunk.x, drunk.y) in building_coords["pub"]:
+        #    print(drunk.id)
+        #    break
+    #print(drunks[5].x)
+    #print(drunks[5].y)    
     # Plot drunks   
     matplotlib.pyplot.imshow(town)
     for drunk in drunks:

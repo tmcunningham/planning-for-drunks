@@ -15,6 +15,8 @@ class Drunk():
         self.building_coords = building_coords
         self.is_home = False
         self.home_coords = building_coords[id]
+        self.front_door = min([t for t in self.home_coords],
+                              key = lambda a: ((a[1]-self.y)**2 + (a[0]-self.x)**2)**0.5)
         self.other_building_coords = set([x for l in self.building_coords.values()\
                                           for x in l if x not in self.home_coords])
         self.history = []
@@ -97,36 +99,37 @@ class Drunk():
                 
             else:
             
-                # If drunk level == 0 set closest home coords
+                """ If drunk level == 0 set closest home coords
                 closest_home_y = min([t[1] for t in self.home_coords],
                                      key = lambda y: abs(y - self.y))   
                 closest_home_x = min([t[0] for t in self.home_coords],
                                      key = lambda x: abs(x - self.x))
+                """
                 
                 #rand_home_coord = random.choice(self.home_coords)
                 if random.randint(0,1) == 1:
-                    if  closest_home_y > self.y:
-                       new_y = (self.y + self.speed) % len(self.town)
-                       new_x = self.x
-                    elif closest_home_y < self.y:
+                    if  self.front_door[1] > self.y:
+                        new_y = (self.y + self.speed) % len(self.town)
+                        new_x = self.x
+                    elif self.front_door[1] < self.y:
                         new_y = (self.y - self.speed) % len(self.town)
                         new_x = self.x
-                    elif closest_home_x > self.x:
+                    elif self.front_door[0] > self.x:
                         new_x = (self.x + self.speed) % len(self.town[0])
                         new_y = self.y
                     else:
                         new_x = (self.x - self.speed) % len(self.town[0])
                         new_y = self.y
                 else:
-                    if closest_home_x > self.x:
+                    if self.front_door[0] > self.x:
                         new_x = (self.x + self.speed) % len(self.town[0])
                         new_y = self.y 
-                    elif closest_home_x < self.x:
+                    elif self.front_door[0] < self.x:
                         new_x = (self.x - self.speed) % len(self.town[0])
                         new_y = self.y 
-                    elif  closest_home_y > self.y:
-                       new_y = (self.y + self.speed) % len(self.town)
-                       new_x = self.x
+                    elif self.front_door[1] > self.y:
+                        new_y = (self.y + self.speed) % len(self.town)
+                        new_x = self.x
                     else:
                         new_y = (self.y - self.speed) % len(self.town)
                         new_x = self.x
@@ -135,17 +138,22 @@ class Drunk():
             # Update x and y if they are not building co-ordinates
             # If they are, start to go around the building
                         
+            
             if (new_x, new_y) not in self.other_building_coords:
                 (self.x, self.y) = new_x, new_y
             elif (new_x, self.y) in self.other_building_coords:
-                (self.x, self.y) = (self.x, (self.y + self.speed) % len(self.town))
+                if random.random() > 0.5:
+                    self.y = (self.y + self.speed) % len(self.town)
+                else:
+                    self.y = (self.y - self.speed) % len(self.town)
             elif (self.x, new_y) in self.other_building_coords:
-                (self.x, self.y) = (self.x + self.speed % len(self.town[0]), self.y)
-                
-                
-                
+                if random.random() > 0.5:
+                    self.x = (self.x + self.speed) % len(self.town)
+                else: 
+                    self.x = (self.x - self.speed) % len(self.town)
             
-            
+            if (self.x, self.y) in self.other_building_coords:
+                print(str(self.id), "in a building")
             
             # Add to environment to show route taken
             # If drunk doesn't move, will still add
@@ -161,7 +169,7 @@ class Drunk():
             if self.drunk_level <= self.max_drunk_level / 2:
                 self.speed = 2
             elif self.drunk_level <= self.max_drunk_level/ 4:
-                self.speed = 3
+                self.speed = 4
                 
         self.history.append((self.x, self.y))
             
