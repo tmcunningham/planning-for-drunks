@@ -12,7 +12,7 @@ import drunksframework
 import random
 
 num_of_moves = 50000
-drunk_level = 0
+drunk_level = 10
 
 fig = matplotlib.pyplot.figure(figsize = (7,7))
 fig.add_axes([0, 0, 1, 1])
@@ -92,7 +92,8 @@ def update(frame_number):
         drunk.move()
         drunk.sober_up()
         
-        
+    print(drunks[5].x)
+    print(drunks[5].y)    
     # Plot drunks   
     matplotlib.pyplot.imshow(town)
     for drunk in drunks:
