@@ -51,23 +51,31 @@ for n in [1, *range(10, 260, 10)]:
         for x in range(len(town[y])):
             if town[y][x] == n:
                 building_coords[building_name].append((x, y))
-                          
 
+# Make pub clearer for plotting
+for i in range(len(town)):
+    for j in range(len(town[i])):
+        if town[i][j] == 1:
+            town[i][j] = 300            
+
+# Set front door coords to be bottom left corner of pub
 front_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1] - 1
 front_door_x = min(building_coords["pub"], key = operator.itemgetter(0))[0] - 1
 
 front_door_coords = (front_door_x, front_door_y)
 
+# Set back door coords to be top right corner of pub
 back_door_y = max(building_coords["pub"], key = operator.itemgetter(1))[1] + 1
 back_door_x = max(building_coords["pub"], key = operator.itemgetter(0))[0] + 1
 
 back_door_coords = (back_door_x, back_door_y)
-             
+
+# Create empty list for drunks         
 drunks = []
 
+# Create drunks - start at front or back door of pub at random
 for id in range(10, 260, 10):
     pub_door_coords = random.choice([front_door_coords, back_door_coords])
-    
     
     drunks.append(drunksframework.Drunk(id = id, 
                                         #x = building_coords[20][0][0],                                        
@@ -78,6 +86,7 @@ for id in range(10, 260, 10):
                                         building_coords = building_coords,
                                         drunk_level = drunk_level))
 
+# Create carry on variable for stopping condition of animation
 carry_on = True    
 
 def update(frame_number):
@@ -121,8 +130,6 @@ def gen_function():
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, 
                                                repeat = False, 
                                                frames = gen_function())
-
-
 matplotlib.pyplot.show()      
 
 """
