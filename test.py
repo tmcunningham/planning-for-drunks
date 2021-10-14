@@ -13,10 +13,12 @@ import drunksframework
 import random
 
 num_of_moves = 50000
-drunk_level = 500
+drunk_level = 1500
 
-fig = matplotlib.pyplot.figure(figsize = (7,7))
-fig.add_axes([0, 0, 1, 1])
+fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
+#fig.add_axes([0, 0, 1, 1])
+#fig.axes.get_xaxis().set_visible(False)
+#fig.axes.get_yaxis().set_visible(False)
 
 with open("drunk.plan", newline = "") as f:
     reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
@@ -94,6 +96,11 @@ def update(frame_number):
     #print(drunks[5].y)    
     # Plot drunks   
     matplotlib.pyplot.imshow(town)
+    matplotlib.pyplot.xlim(0, len(town[0]))
+    matplotlib.pyplot.ylim(0, len(town))
+    matplotlib.pyplot.tick_params(left = False, right = False , 
+                                  labelleft = False, labelbottom = False, 
+                                  bottom = False)
     for drunk in drunks:
         matplotlib.pyplot.scatter(drunk.x, drunk.y)
         

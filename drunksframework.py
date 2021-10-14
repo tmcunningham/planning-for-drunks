@@ -39,45 +39,10 @@ class Drunk():
     x = property(get_x, set_x, "x property")
     y = property(get_y, set_y, "y property")
     
-    # Move up down left or right (not diagonally) at random
+    # Move up down left or right (not diagonally)
     def move(self):
-        # If not already at home, move up down left or right at random
+        # If not already at home, move up down left or right
         if not self.is_home:
-            
-            
-            """
-            if self.drunk_level > 0:
-                random_num = random.random()
-                        
-                if random_num < 0.25:
-                    self.y = (self.y + self.speed) % len(self.town)
-                elif random_num < 0.5:
-                    self.y = (self.y - self.speed) % len(self.town)
-                elif random_num < 0.75:
-                    self.x = (self.x + self.speed) % len(self.town[0])
-                else:
-                    self.x = (self.x - self.speed) % len(self.town[0])
-            
-            else:
-                    # If drunk level == 0 set closest home coords
-                    closest_home_y = min([t[1] for t in self.home_coords],
-                                         key = lambda y: abs(y - self.y))   
-                    closest_home_x = min([t[0] for t in self.home_coords],
-                                         key = lambda x: abs(x - self.x))
-                   
-                    if  closest_home_y > self.y:
-                        self.y = (self.y + self.speed) % len(self.town)
-                    elif closest_home_y < self.y:
-                        self.y = (self.y - self.speed) % len(self.town)
-                    elif closest_home_x > self.x:
-                        self.x = (self.x + self.speed) % len(self.town[0])
-                    else:
-                        self.x = (self.x - self.speed) % len(self.town[0])
-            
-            if 
-        
-            
-            """
             if self.drunk_level > 0:
                 # Call random once so using the same random number - noticed a bug
                 random_num = random.random()
@@ -98,16 +63,9 @@ class Drunk():
                 
                 
             else:
-            
-                """ If drunk level == 0 set closest home coords
-                closest_home_y = min([t[1] for t in self.home_coords],
-                                     key = lambda y: abs(y - self.y))   
-                closest_home_x = min([t[0] for t in self.home_coords],
-                                     key = lambda x: abs(x - self.x))
-                """
-                
-                #rand_home_coord = random.choice(self.home_coords)
-                if random.randint(0,1) == 1:
+                # If drunk_level == 0, move drunk towards home
+                # Randomise whether to change x or y coord first
+                if random.random() < 0.5:
                     if  self.front_door[1] > self.y:
                         new_y = (self.y + self.speed) % len(self.town)
                         new_x = self.x
@@ -120,6 +78,7 @@ class Drunk():
                     else:
                         new_x = (self.x - self.speed) % len(self.town[0])
                         new_y = self.y
+                        
                 else:
                     if self.front_door[0] > self.x:
                         new_x = (self.x + self.speed) % len(self.town[0])
@@ -167,9 +126,9 @@ class Drunk():
         if ((self.x, self.y) in self.history) and (self.drunk_level > 0):
             self.drunk_level -= 1
             if self.drunk_level <= self.max_drunk_level / 2:
-                self.speed = 2
+                self.speed = 3
             elif self.drunk_level <= self.max_drunk_level/ 4:
-                self.speed = 4
+                self.speed = 5
                 
         self.history.append((self.x, self.y))
             
