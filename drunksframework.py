@@ -104,32 +104,18 @@ class Drunk():
                                      key = lambda x: abs(x - self.x))
                 
                 #rand_home_coord = random.choice(self.home_coords)
-                if random.random() < 0.5:
-                    if  closest_home_y > self.y:
-                       new_y = (self.y + self.speed) % len(self.town)
-                       new_x = self.x
-                    elif closest_home_y < self.y:
-                        new_y = (self.y - self.speed) % len(self.town)
-                        new_x = self.x
-                    if closest_home_x > self.x:
-                        new_x = (self.x + self.speed) % len(self.town[0])
-                        new_y = self.y
-                    else:
-                        new_x = (self.x - self.speed) % len(self.town[0])
-                        new_y = self.y
-                else:   
-                    if closest_home_x > self.x:
-                        new_x = (self.x + self.speed) % len(self.town[0])
-                        new_y = self.y
-                    elif closest_home_x < self.x:
-                        new_x = (self.x - self.speed) % len(self.town[0])
-                        new_y = self.y
-                    elif  closest_home_y > self.y:
-                       new_y = (self.y + self.speed) % len(self.town)
-                       new_x = self.x
-                    else:
-                        new_y = (self.y - self.speed) % len(self.town)
-                        new_x = self.x
+                if  closest_home_y > self.y:
+                   new_y = (self.y + self.speed) % len(self.town)
+                   new_x = self.x
+                elif closest_home_y < self.y:
+                    new_y = (self.y - self.speed) % len(self.town)
+                    new_x = self.x
+                if closest_home_x > self.x:
+                    new_x = (self.x + self.speed) % len(self.town[0])
+                    new_y = self.y
+                else:
+                    new_x = (self.x - self.speed) % len(self.town[0])
+                    new_y = self.y
             
             
             # Update x and y if they are not building co-ordinates
@@ -137,14 +123,10 @@ class Drunk():
                         
             if (new_x, new_y) not in self.other_building_coords:
                 (self.x, self.y) = new_x, new_y
-            elif (self.x + self.speed % len(self.town[0]), self.y) in self.other_building_coords:
+            elif (new_x, self.y) in self.other_building_coords:
                 (self.x, self.y) = (self.x, (self.y + self.speed) % len(self.town))
-            elif (self.x - self.speed % len(self.town[0]), self.y) in self.other_building_coords:
-                (self.x, self.y) = (self.x, (self.y - self.speed) % len(self.town))
-            elif (self.x, (self.y + self.speed) % len(self.town)) in self.other_building_coords:
+            elif (self.x, new_y) in self.other_building_coords:
                 (self.x, self.y) = (self.x + self.speed % len(self.town[0]), self.y)
-            else:
-                (self.x, self.y) = (self.x - self.speed % len(self.town[0]), self.y)  
                 
                 
                 

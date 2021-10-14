@@ -12,7 +12,7 @@ import drunksframework
 import random
 
 num_of_moves = 50000
-drunk_level = 300
+drunk_level = 0
 
 fig = matplotlib.pyplot.figure(figsize = (7,7))
 fig.add_axes([0, 0, 1, 1])
