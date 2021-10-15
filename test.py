@@ -143,16 +143,5 @@ animation = matplotlib.animation.FuncAnimation(fig, update, interval=1,
                                                frames = gen_function())
 matplotlib.pyplot.show()      
 
-"""
-# Plot the pub to verify it is larger than other buildings
-town2 = town
-
-for i in range(len(town2)):
-    for j in range(len(town2[i])):
-        if town2[i][j] == 1:
-            town2[i][j] = 400
-        
-matplotlib.pyplot.imshow(town2)
-"""
 
 

@@ -102,6 +102,15 @@ class Drunk():
     
     # Move up down left or right (not diagonally)
     def move(self):
+        """
+        Move the drunk according to whether or not their drunk level is 0.
+        
+        If drunk level is > 0 (i.e. still drunk) move drunk randomly up, down,
+        left or right. If drunk level is 0 (i.e. relatively sober) move drunk
+        towards their front door, choosing randomly whether to alter x or y
+        co-ordinate. In both cases, only set new x or y if it is not in a
+        non-home building. Otherwise, alter other co-ordinate.
+        """
         # If not already at home, move up down left or right
         if not self.is_home:
             if self.drunk_level > 0:
@@ -184,6 +193,10 @@ class Drunk():
                 self.is_home = True
       
     def sober_up(self):
+        """
+        Decreases drunk level of drunk by ond alters speed at certain drunk
+        levels. Adds current x and y coordinates to drunk's history.
+        """
         if ((self.x, self.y) in self.history) and (self.drunk_level > 0):
             self.drunk_level -= 1
             if self.drunk_level <= self.start_drunk_level / 2:
