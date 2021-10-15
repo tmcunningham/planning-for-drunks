@@ -12,14 +12,17 @@ import operator
 import drunksframework
 import random
 
-num_of_moves = 50000
-drunk_level = 1500
+# Define maximum number of iterations
+num_of_moves = 5000
+# Define the limits for how drunk the drunks are - a random number will be
+# chosen between these two values for each drunk
+drunk_level_lower = 300
+drunk_level_higher = 2000
 
-fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
-#fig.add_axes([0, 0, 1, 1])
-#fig.axes.get_xaxis().set_visible(False)
-#fig.axes.get_yaxis().set_visible(False)
+# Create figure
+fig = matplotlib.pyplot.figure(figsize = (10,10), frameon = False)
 
+# Read in town data and format it as a list of lists
 with open("drunk.plan", newline = "") as f:
     reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
     town = []
@@ -58,13 +61,13 @@ for i in range(len(town)):
         if town[i][j] == 1:
             town[i][j] = 300            
 
-# Set front door coords to be bottom left corner of pub
+# Set front door coords to be outside bottom left corner of pub
 front_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1] - 1
 front_door_x = min(building_coords["pub"], key = operator.itemgetter(0))[0] - 1
 
 front_door_coords = (front_door_x, front_door_y)
 
-# Set back door coords to be top right corner of pub
+# Set back door coords to be outside top right corner of pub
 back_door_y = max(building_coords["pub"], key = operator.itemgetter(1))[1] + 1
 back_door_x = max(building_coords["pub"], key = operator.itemgetter(0))[0] + 1
 
@@ -84,7 +87,8 @@ for id in range(10, 260, 10):
                                         y = pub_door_coords[1],
                                         town = town,
                                         building_coords = building_coords,
-                                        drunk_level = drunk_level))
+                                        drunk_level = random.randint(drunk_level_lower,
+                                                                     drunk_level_higher)))
 
 # Create carry on variable for stopping condition of animation
 carry_on = True    
@@ -102,22 +106,26 @@ def update(frame_number):
         #    print(drunk.id)
         #    break
     #print(drunks[5].x)
-    #print(drunks[5].y)    
-    # Plot drunks   
+    #print(drunks[5].y)  
+    
+    # Plot town without ticks on axes
     matplotlib.pyplot.imshow(town)
     matplotlib.pyplot.xlim(0, len(town[0]))
     matplotlib.pyplot.ylim(0, len(town))
     matplotlib.pyplot.tick_params(left = False, right = False , 
                                   labelleft = False, labelbottom = False, 
                                   bottom = False)
+    
+    # Plot drunks
     for drunk in drunks:
         matplotlib.pyplot.scatter(drunk.x, drunk.y)
-        
+    
+    # Print how long it took to get all drunks home
     if all([drunk.is_home for drunk in drunks]):
         carry_on = False
         print("All drunks home in " + str(frame_number) + " moves.")
 
-
+# Define generator function that stops if carry_on False or if num_of_moves met
 def gen_function():
     global carry_on
     i = 0
@@ -125,8 +133,11 @@ def gen_function():
         yield i
         i += 1
     else:
-        print(str(sum([drunk.is_home for drunk in drunks])) + " drunks got home.")
+        carry_on = False
+        print(str(sum([d.is_home for d in drunks])), "drunks got home.")
+        
 
+# Create animation
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, 
                                                repeat = False, 
                                                frames = gen_function())

@@ -7,7 +7,68 @@ Created on Tue Sep 28 14:23:02 2021
 import random
 
 class Drunk():
+    """
+    Defines an instance of a single drunk person.
+    
+    Properties
+    ----------
+    id : int
+        the number of the drunk's house
+    x : int 
+        the drunk's current x co-ordinate
+    y : int
+        the drunk's current y co-ordinate
+    town : list
+        raster data of town
+    building_coords : dict 
+        all of the town's building's co-ordinates as values, with names as keys
+    is_home : bool
+        indicates whether a drunk is at their home
+    home_coords : list
+        all coordinates of a drunk's home
+    front_door : tuple
+        co-ordinate of drunk's front door - closest home_coord to start point
+    other_building_coords : set
+        co-ordinates of buildings that are not drunk's home
+    history : list
+        all co-ordinates drunk has previously visited
+    drunk_level : int
+        number indicating how drunk the drunk currently is
+    start_level : int
+        the drunk's starting drunk_level
+    speed : int
+        how fast the drunk currently moves (i.e. how many spaces)
+               
+    Methods
+    -------
+    move()
+        Moves the drunk while avoiding buildings. Either:
+            moves randomly up, down, left or right (if still drunk) 
+            towards home if drunk_level is 0 (i.e. drunk has sobered up)
+    
+    sober_up()
+        Decreases drunk level by one. Increases drunk's speed if level drops 
+        below half or below a quarter of start level. Adds current position to
+        history.
+    """
+    
     def __init__(self, id, x, y, town, building_coords, drunk_level):
+        """
+        Parameters
+        ----------
+        id : int
+            the number of the drunk's house
+        x : int 
+            the drunk's current x co-ordinate
+        y : int
+            the drunk's current y co-ordinate
+        town : list
+            raster data of town
+        building_coords : dict 
+            all of the town's building's co-ordinates as values, with names as keys
+        drunk_level : int
+            number indicating how drunk the drunk currently is
+        """
         self.id = id
         self._x = x
         self._y = y
@@ -20,8 +81,8 @@ class Drunk():
         self.other_building_coords = set([x for l in self.building_coords.values()\
                                           for x in l if x not in self.home_coords])
         self.history = []
-        self.max_drunk_level = drunk_level
         self.drunk_level = drunk_level
+        self.start_drunk_level = drunk_level
         self.speed = 1
         
     def get_x(self):
@@ -125,12 +186,13 @@ class Drunk():
     def sober_up(self):
         if ((self.x, self.y) in self.history) and (self.drunk_level > 0):
             self.drunk_level -= 1
-            if self.drunk_level <= self.max_drunk_level / 2:
+            if self.drunk_level <= self.start_drunk_level / 2:
                 self.speed = 3
-            elif self.drunk_level <= self.max_drunk_level/ 4:
+            elif self.drunk_level <= self.start_drunk_level/ 4:
                 self.speed = 5
-                
-        self.history.append((self.x, self.y))
+        
+        if not self.is_home: 
+            self.history.append((self.x, self.y))
             
             
         """
