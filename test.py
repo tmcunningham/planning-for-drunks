@@ -20,7 +20,7 @@ drunk_level_lower = 300
 drunk_level_higher = 2000
 
 # Create figure
-fig = matplotlib.pyplot.figure(figsize = (10,10), frameon = False)
+fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
 
 # Read in town data and format it as a list of lists
 with open("drunk.plan", newline = "") as f:

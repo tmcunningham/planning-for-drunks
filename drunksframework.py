@@ -2,7 +2,7 @@
 """
 Created on Tue Sep 28 14:23:02 2021
 
-@author: c27028tc
+@author: Tom Cunningham
 """
 import random
 
@@ -44,7 +44,7 @@ class Drunk():
     move()
         Moves the drunk while avoiding buildings. Either:
             moves randomly up, down, left or right (if still drunk) 
-            towards home if drunk_level is 0 (i.e. drunk has sobered up)
+            or towards home if drunk_level is 0 (i.e. drunk has sobered up)
     
     sober_up()
         Decreases drunk level by one. Increases drunk's speed if level drops 
@@ -65,7 +65,8 @@ class Drunk():
         town : list
             raster data of town
         building_coords : dict 
-            all of the town's building's co-ordinates as values, with names as keys
+            all of the town's building's co-ordinates as values, with names as 
+            keys
         drunk_level : int
             number indicating how drunk the drunk currently is
         """
@@ -77,9 +78,12 @@ class Drunk():
         self.is_home = False
         self.home_coords = building_coords[id]
         self.front_door = min([t for t in self.home_coords],
-                              key = lambda a: ((a[1]-self.y)**2 + (a[0]-self.x)**2)**0.5)
-        self.other_building_coords = set([x for l in self.building_coords.values()\
-                                          for x in l if x not in self.home_coords])
+                              key = lambda a: ((a[1]-self.y)**2 + \
+                                               (a[0]-self.x)**2)**0.5)
+        self.other_building_coords = set([x for l in \
+                                          self.building_coords.values() \
+                                          for x in l if x not in \
+                                          self.home_coords])
         self.history = []
         self.drunk_level = drunk_level
         self.start_drunk_level = drunk_level
@@ -194,8 +198,9 @@ class Drunk():
       
     def sober_up(self):
         """
-        Decreases drunk level of drunk by ond alters speed at certain drunk
-        levels. Adds current x and y coordinates to drunk's history.
+        Decrease drunk level of drunk ond alters speed. Add x and y to history.
+        
+        Decrease
         """
         if ((self.x, self.y) in self.history) and (self.drunk_level > 0):
             self.drunk_level -= 1
