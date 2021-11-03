@@ -14,8 +14,8 @@ import random
 
 # Define maximum number of iterations
 num_of_moves = 5000
-# Define the limits for how drunk the drunks are - a random number will be
-# chosen between these two values for each drunk
+# Define the limits for how drunk the drunks are
+# A random number will be chosen between these two values for each drunk
 drunk_level_lower = 300
 drunk_level_higher = 2000
 
