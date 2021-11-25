@@ -131,7 +131,7 @@ def update(frame_number):
         print("All drunks home in " + str(frame_number) + " moves.")
 
 # Define generator function that stops if carry_on False or if num_of_moves met
-def gen_function():
+def gen_function(num_of_moves):
     global carry_on
     i = 0
     while (i < num_of_moves) & (carry_on):
@@ -145,7 +145,7 @@ def gen_function():
 # Create animation
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, 
                                                repeat = False, 
-                                               frames = gen_function())
+                                               frames = gen_function(num_of_moves))
 matplotlib.pyplot.show()
 
 
