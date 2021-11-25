@@ -16,11 +16,8 @@ import random
 num_of_moves = 5000
 # Define the limits for how drunk the drunks are
 # A random number will be chosen between these two values for each drunk
-drunk_level_lower = 300
-drunk_level_higher = 2000
-
-# Create figure
-fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
+drunk_level_lower = 20
+drunk_level_higher = 20
 
 # Read in town data and format it as a list of lists
 with open("drunk.plan", newline = "") as f:
@@ -55,11 +52,13 @@ for n in [1, *range(10, 260, 10)]:
             if town[y][x] == n:
                 building_coords[building_name].append((x, y))
 
+"""
 # Make pub clearer for plotting
 for i in range(len(town)):
     for j in range(len(town[i])):
         if town[i][j] == 1:
-            town[i][j] = 300            
+            town[i][j] = -50
+"""
 
 # Set front door coords to be outside bottom left corner of pub
 front_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1] - 1
@@ -93,6 +92,9 @@ for id in range(10, 260, 10):
 # Create carry on variable for stopping condition of animation
 carry_on = True    
 
+# Create figure
+fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
+
 def update(frame_number):
     global carry_on
     fig.clear()
@@ -108,6 +110,7 @@ def update(frame_number):
     #print(drunks[5].x)
     #print(drunks[5].y)  
     
+    
     # Plot town without ticks on axes
     matplotlib.pyplot.imshow(town)
     matplotlib.pyplot.xlim(0, len(town[0]))
@@ -116,9 +119,11 @@ def update(frame_number):
                                   labelleft = False, labelbottom = False, 
                                   bottom = False)
     
+    
     # Plot drunks
     for drunk in drunks:
         matplotlib.pyplot.scatter(drunk.x, drunk.y)
+    
     
     # Print how long it took to get all drunks home
     if all([drunk.is_home for drunk in drunks]):
@@ -141,7 +146,13 @@ def gen_function():
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, 
                                                repeat = False, 
                                                frames = gen_function())
-matplotlib.pyplot.show()      
+matplotlib.pyplot.show()
 
+
+# Write town data
+with open("town_out.txt", "w", newline = "") as f2:
+            writer = csv.writer(f2, delimiter = ",")
+            for row in town:
+                writer.writerow(row)
 
 
