@@ -101,7 +101,7 @@ def create_drunks(drunk_level_lower, drunk_level_higher):
                                             drunk_level = random.randint(drunk_level_lower,
                                                                          drunk_level_higher)))    
 
-def update(frame_number, carry_on):
+def update(frame_number, carry_on, drunks, fig, town):
     global carry_on
     fig.clear()
     
@@ -137,7 +137,7 @@ def update(frame_number, carry_on):
         print("All drunks home in " + str(frame_number) + " moves.")
 
 # Define generator function that stops if carry_on False or if num_of_moves met
-def gen_function(num_of_moves):
+def gen_function(num_of_moves, drunks):
     global carry_on
     i = 0
     while (i < num_of_moves) & (carry_on):
