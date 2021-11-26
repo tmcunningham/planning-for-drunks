@@ -10,3 +10,9 @@ Within the **python** folder, this repository contains the following:
 - **drunk_model.py** file that uses the functions from durnk_functions.py to create an animation of the model and write the output to a txt file
 - **measure_drunks_moves.py** file that measures how many iterations it takes for all drunks to get home with different ```drunk_level```s
 - **drunk.plan:** raster data file with the drunks' homes and the pub
+
+## About the model
+
+### What the model does
+
+This model simulates 
