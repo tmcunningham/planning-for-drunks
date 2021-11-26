@@ -8,26 +8,25 @@ Created on Mon Sep 27 15:19:45 2021
 import csv
 import matplotlib.animation
 import matplotlib.pyplot
-import operator
-import drunksframework
-import random
+import drunk_functions
+import timeit
 
 # Define maximum number of iterations
 num_of_moves = 5000
+
 # Define the limits for how drunk the drunks are
 # A random number will be chosen between these two values for each drunk
 drunk_level_lower = 20
 drunk_level_higher = 20
 
-# Read in town data and format it as a list of lists
-with open("drunk.plan", newline = "") as f:
-    reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
-    town = []
-    for row in reader:
-        rowlist = []
-        for value in row:
-            rowlist.append(value)
-        town.append(rowlist)
+# Set start time to time programme
+start_time = timeit.default_timer
+
+# Set maximum number of moves (if this is too low it will affect results)
+max_moves = 50000000000
+
+# Import town data
+town = drunk_functions.import_town()
 
 # Check data has correct dimensions
 #len(town)
@@ -35,22 +34,6 @@ with open("drunk.plan", newline = "") as f:
 
 # Plot data        
 # matplotlib.pyplot.imshow(town)
-
-#Create empty dictionary to collect building co-ordinates
-building_coords = {}
-
-# Create list of co-ordinates for each building in the town
-# Dictionary key is either "pub" or building number and value is list of coords
-for n in [1, *range(10, 260, 10)]:
-    if n == 1:
-        building_name = "pub"
-    else:
-        building_name = n
-    building_coords[building_name] = []
-    for y in range(len(town)):
-        for x in range(len(town[y])):
-            if town[y][x] == n:
-                building_coords[building_name].append((x, y))
 
 """
 # Make pub clearer for plotting
@@ -60,96 +43,34 @@ for i in range(len(town)):
             town[i][j] = -50
 """
 
-# Set front door coords to be outside bottom left corner of pub
-front_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1] - 1
-front_door_x = min(building_coords["pub"], key = operator.itemgetter(0))[0] - 1
+# Set building coordinates
+building_coords = drunk_functions.set_building_coords(town)
 
-front_door_coords = (front_door_x, front_door_y)
+# Set front door coordinates
+front_door_coords = drunk_functions.set_pub_front_door(building_coords)
 
-# Set back door coords to be outside top right corner of pub
-back_door_y = max(building_coords["pub"], key = operator.itemgetter(1))[1] + 1
-back_door_x = max(building_coords["pub"], key = operator.itemgetter(0))[0] + 1
+# Set back door coordinates
+back_door_coords = drunk_functions.set_pub_back_door(building_coords)
 
-back_door_coords = (back_door_x, back_door_y)
-
-# Create empty list for drunks         
-drunks = []
-
-# Create drunks - start at front or back door of pub at random
-for id in range(10, 260, 10):
-    pub_door_coords = random.choice([front_door_coords, back_door_coords])
-    
-    drunks.append(drunksframework.Drunk(id = id, 
-                                        #x = building_coords[20][0][0],                                        
-                                        #y = building_coords[20][0][1],
-                                        x = pub_door_coords[0],
-                                        y = pub_door_coords[1],
-                                        town = town,
-                                        building_coords = building_coords,
-                                        drunk_level = random.randint(drunk_level_lower,
-                                                                     drunk_level_higher)))
-
-# Create carry on variable for stopping condition of animation
-carry_on = True    
+# Create drunks
+drunks = drunk_functions.create_drunks(town, building_coords,
+                                       front_door_coords, back_door_coords,
+                                       drunk_level_lower, 
+                                       drunk_level_higher)
 
 # Create figure
 fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
-
-def update(frame_number):
-    global carry_on
-    fig.clear()
-    
-    # Move drunks
-    for drunk in drunks:
-        #print(drunks[j].x)
-        drunk.move()
-        drunk.sober_up()
-        #if (drunk.x, drunk.y) in building_coords["pub"]:
-        #    print(drunk.id)
-        #    break
-    #print(drunks[5].x)
-    #print(drunks[5].y)  
-    
-    
-    # Plot town without ticks on axes
-    matplotlib.pyplot.imshow(town)
-    matplotlib.pyplot.xlim(0, len(town[0]))
-    matplotlib.pyplot.ylim(0, len(town))
-    matplotlib.pyplot.tick_params(left = False, right = False , 
-                                  labelleft = False, labelbottom = False, 
-                                  bottom = False)
-    
-    
-    # Plot drunks
-    for drunk in drunks:
-        matplotlib.pyplot.scatter(drunk.x, drunk.y)
-    
-    
-    # Print how long it took to get all drunks home
-    if all([drunk.is_home for drunk in drunks]):
-        carry_on = False
-        print("All drunks home in " + str(frame_number) + " moves.")
-
-# Define generator function that stops if carry_on False or if num_of_moves met
-def gen_function(num_of_moves):
-    global carry_on
-    i = 0
-    while (i < num_of_moves) & (carry_on):
-        yield i
-        i += 1
-    else:
-        carry_on = False
-        print(str(sum([d.is_home for d in drunks])), "drunks got home.")
         
-
 # Create animation
-animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, 
+animation = matplotlib.animation.FuncAnimation(fig, drunk_functions.update, 
+                                               fargs = (drunks, fig, town,),
+                                               interval=1, 
                                                repeat = False, 
-                                               frames = gen_function(num_of_moves))
+                                               frames = drunk_functions.gen_function(num_of_moves, drunks))
 matplotlib.pyplot.show()
 
 
-# Write town data
+# Write town data to file
 with open("town_out.txt", "w", newline = "") as f2:
             writer = csv.writer(f2, delimiter = ",")
             for row in town:

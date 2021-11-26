@@ -2,7 +2,7 @@
 """
 Created on Thu Nov 25 01:24:10 2021
 
-@author: tcunn
+@author: Tom Cunningham
 """
 
 import csv
@@ -32,9 +32,7 @@ def import_town():
     # Plot data        
     # matplotlib.pyplot.imshow(town)
     
-def set_building_coords():
-    
-    town = import_town()
+def set_building_coords(town):
     #Create empty dictionary to collect building co-ordinates
     building_coords = {}
     
@@ -60,8 +58,7 @@ def set_building_coords():
             if town[i][j] == 1:
                 town[i][j] = -50
     """
-def set_pub_front_door():
-    building_coords = set_building_coords()
+def set_pub_front_door(building_coords):
     # Set front door coords to be outside bottom left corner of pub
     front_door_y = min(building_coords["pub"], key = operator.itemgetter(1))[1] - 1
     front_door_x = min(building_coords["pub"], key = operator.itemgetter(0))[0] - 1
@@ -70,8 +67,7 @@ def set_pub_front_door():
     
     return front_door_coords
 
-def set_pub_back_door():
-    building_coords = set_building_coords()
+def set_pub_back_door(building_coords):
     # Set back door coords to be outside top right corner of pub
     back_door_y = max(building_coords["pub"], key = operator.itemgetter(1))[1] + 1
     back_door_x = max(building_coords["pub"], key = operator.itemgetter(0))[0] + 1
@@ -80,12 +76,9 @@ def set_pub_back_door():
     
     return back_door_coords
 
-def create_drunks(drunk_level_lower, drunk_level_higher):
-    drunks = []
-    town = import_town()
-    building_coords = set_building_coords()
-    front_door_coords = set_pub_front_door()
-    back_door_coords = set_pub_back_door()
+def create_drunks(town, building_coords, front_door_coords, back_door_coords,
+                  drunk_level_lower, drunk_level_higher):
+    drunks = []   
     
     # Create drunks - start at front or back door of pub at random
     for id in range(10, 260, 10):
@@ -99,9 +92,11 @@ def create_drunks(drunk_level_lower, drunk_level_higher):
                                             town = town,
                                             building_coords = building_coords,
                                             drunk_level = random.randint(drunk_level_lower,
-                                                                         drunk_level_higher)))    
+                                                                         drunk_level_higher)))
+        
+    return drunks
 
-def update(frame_number, carry_on, drunks, fig, town):
+def update(frame_number, drunks, fig, town):
     global carry_on
     fig.clear()
     
@@ -136,15 +131,15 @@ def update(frame_number, carry_on, drunks, fig, town):
         carry_on = False
         print("All drunks home in " + str(frame_number) + " moves.")
 
-# Define generator function that stops if carry_on False or if num_of_moves met
+# Define gen function that stops if all drunks home or if num_of_moves met
 def gen_function(num_of_moves, drunks):
-    global carry_on
     i = 0
-    while (i < num_of_moves) & (carry_on):
+    while (i < num_of_moves) & (any([not drunk.is_home for drunk in drunks])):
         yield i
         i += 1
     else:
-        carry_on = False
         print(str(sum([d.is_home for d in drunks])), "drunks got home.")
+        
+        
 
 
