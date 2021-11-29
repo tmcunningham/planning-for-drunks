@@ -15,7 +15,7 @@ Within the **python** folder, this repository contains the following:
 
 ### What the model does
 
-The file **drunk_model.py** runs the following stages:
+When it is run, the file **drunk_model.py** runs the following stages and produce an animation:
 - imports a raster file of the town's buildings (drunks' houses and the pub)
 - using the town data, creates a named dictionary of buildings' ```x``` and ```y``` co-ordinates
 - sets the pub's front and back door to be the south-west and north-east corners, respectively (where the drunks will start from)
@@ -27,4 +27,15 @@ The file **drunk_model.py** runs the following stages:
 The model will run until each drunk has reached their house or the maximum number of iterations has been reached. Each drunk has a specific house.
 
 ### How to run the model
- 
+
+The user can run the model and produce the animation from the command line by using the following line of code in the directory where **drunk_model.py**, **drunk_functions.py**, **drunksframework.py** and **drunk.plan** are saved:
+
+```python drunk_model.py [num_of_moves] [drunk_level_lower] [drunk_level_higher]```
+
+The arguments are:
+- ```[num_of_moves] = 5000```: maximum number of iterations
+- ```[drunk_level_lower] = 20```: minimum value for each drunk's starting ```drunk_level```
+- ```[drunk_level_higher] = 100```: maximum value for each drunk's starting ```drunk_level```
+
+Each drunk's starting ```drunk_level``` will be chosen at random between the lower and higher levels inclusive (so if the numbers are the same, all drunks will start at the same ```drunk_level```).
+
