@@ -16,16 +16,16 @@ start_time = timeit.default_timer()
 max_moves = 50000000000
 
 # Import town data
-town = drunk_functions.import_town()
+town = drunk_functions.import_town("drunk.plan")
 
 # Set building coordinates
-building_coords = drunk_functions.set_building_coords(town)
+building_coords = drunk_functions.get_building_coords(town)
 
 # Set front door coordinates
-front_door_coords = drunk_functions.set_pub_front_door(building_coords)
+front_door_coords = drunk_functions.get_pub_front_door(building_coords)
 
 # Set back door coordinates
-back_door_coords = drunk_functions.set_pub_back_door(building_coords)
+back_door_coords = drunk_functions.get_pub_back_door(building_coords)
 
 # Set drunk levels to be tested
 drunk_levels = [10, 20, 50, 100, 200]

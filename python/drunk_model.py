@@ -23,7 +23,7 @@ drunk_level_higher = 20
 start_time = timeit.default_timer
 
 # Import town data
-town = drunk_functions.import_town()
+town = drunk_functions.import_town("drunk.plan")
 
 # Check data has correct dimensions
 #len(town)
@@ -41,13 +41,13 @@ for i in range(len(town)):
 """
 
 # Set building coordinates
-building_coords = drunk_functions.set_building_coords(town)
+building_coords = drunk_functions.get_building_coords(town)
 
 # Set front door coordinates
-front_door_coords = drunk_functions.set_pub_front_door(building_coords)
+front_door_coords = drunk_functions.get_pub_front_door(building_coords)
 
 # Set back door coordinates
-back_door_coords = drunk_functions.set_pub_back_door(building_coords)
+back_door_coords = drunk_functions.get_pub_back_door(building_coords)
 
 # Create drunks
 drunks = drunk_functions.create_drunks(town, building_coords,
