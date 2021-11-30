@@ -22,9 +22,6 @@ drunk_level_higher = 20
 # Set start time to time programme
 start_time = timeit.default_timer
 
-# Set maximum number of moves (if this is too low it will affect results)
-max_moves = 50000000000
-
 # Import town data
 town = drunk_functions.import_town()
 
