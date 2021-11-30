@@ -12,6 +12,51 @@ import operator
 import drunksframework
 import random
 
+def catch_input(default_value, desired_type, input_message = "Input: ", 
+                failure_message = "Invalid input.", 
+                default_message = "Default value used.", num_attempts = 3):
+    """
+    Function to better catch type errors in user input. If the input can be 
+    parsed using desired_type, then this value is returned. Otherwise, the 
+    user will be asked again a number of times (up to num_attempts) and if the 
+    input still results as an error, then the default_value is returned.
+
+    Parameters
+    ----------
+    default_value : str
+        Value returned if all inputs fail. Must be able to be parsed by
+        desired_type.
+    desired_type : type
+        Desired type of the input (e.g. str, int).
+    input_message : str, optional
+        Prompt to user for input. The default is "Input: ".
+    failure_message : str, optional
+        Message to print when input fails. The default is "Invalid input.".
+    default_message : str, optional
+        Message to print when default_value used. The default is "Default 
+        value used.".
+    num_attempts : int, optional
+        Number of times to attempt to prompt for input. The default is 3.
+
+    Returns
+    -------
+    type as specified by desired_type
+        Value of input if successful, or default_value otherwise.
+
+    """
+    attempt = 0
+    while attempt < num_attempts:
+        try:
+            return desired_type(input(input_message))
+            break
+        except:
+            print(failure_message)
+            attempt += 1
+            continue
+    else:
+        print(default_message)
+        return desired_type(default_value)
+
 def import_town(data_file):
     """
     Reads town raster data from a CSV file.
