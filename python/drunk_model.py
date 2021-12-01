@@ -23,13 +23,13 @@ except:
         )
 
 # Set drunk_level_lower for drunks
+# A random number will be chosen between lower and upper values for each drunk
 try:
     drunk_level_lower = int(sys.argv[2]) 
 except:
     drunk_level_lower = drunk_functions.catch_input(
         20, int, 
-        "Please specify a lower limit for the drunks' \
-        drunk level as an integer: ",
+        "Please specify a lower limit for drunk level as an integer: ",
         "Input not recognised as integer.",
         "Lower drunk level set to default of 20.\n"
         )
@@ -40,24 +40,19 @@ try:
 except:
     drunk_level_higher = drunk_functions.catch_input(
         drunk_level_lower + 50, int, 
-        "Please specify an upper limit for the drunks' \
-        drunk level as an integer: ",
+        "Please specify an upper limit for drunk level as an integer: ",
         "Input not recognised as integer.",
         str("Upper drunk level set to default of ") +
             str(drunk_level_lower + 50)
         )
 
+# Use smallest value as lower level and largest as upper
 drunk_level_lower = min(drunk_level_lower, drunk_level_higher)
 drunk_level_higher = max(drunk_level_lower, drunk_level_higher)
 
-
-# Define maximum number of iterations
-num_of_moves = 5000
-
-# Define the limits for how drunk the drunks are
-# A random number will be chosen between these two values for each drunk
-drunk_level_lower = 20
-drunk_level_higher = 20
+print("Number of iterations: " + str(num_of_moves),
+      "\nLower drunk level: " + str(drunk_level_lower),
+      "\nUpper drunk level: " + str(drunk_level_higher))
 
 # Set start time to time programme
 start_time = timeit.default_timer()
@@ -102,7 +97,7 @@ fig = matplotlib.pyplot.figure(figsize = (7,7), frameon = False)
 animation = matplotlib.animation.FuncAnimation(
     fig, 
     drunk_functions.update, 
-    fargs = (drunks, fig, town,),
+    fargs = (drunks, fig, town, drunk_level_lower, drunk_level_higher,),
     interval=1,
     repeat = False, 
     frames = drunk_functions.gen_function(num_of_moves, drunks)

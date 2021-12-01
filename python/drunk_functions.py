@@ -243,7 +243,10 @@ def create_drunks(town, building_coords, front_door_coords, back_door_coords,
         
     return drunks
 
-def update(frame_number, drunks, fig, town):
+def update(frame_number, drunks, fig, town,
+           drunk_level_lower,
+           drunk_level_higher,
+           cmap = matplotlib.pyplot.cm.get_cmap('RdYlBu')):
     """
     Uses the drunks' move and sober_up methods once per drunk in the drunks
     list and then plots the new state of the drunks and town.
@@ -262,6 +265,15 @@ def update(frame_number, drunks, fig, town):
         Figure used for plotting.
     town : list
         List of lists representing raster data of the town.
+    drunk_level_lower : int
+        Lower limit of starting drunk_level for all drunks, used to scale 
+        colors for plotting.
+    drunk_level_higher : int
+        Upper limit of starting drunk_level for all drunks, used to scale 
+        colors for plotting.
+    cmap : matplotlib.colors.LinearSegmentedColormap, optional
+        Color map for plotting the color of drunks according to their 
+        drunk_level. The default is matplotlib.pyplot.cm.get_cmap('RdYlBu').
 
     Returns
     -------
@@ -294,7 +306,12 @@ def update(frame_number, drunks, fig, town):
     
     # Plot drunks
     for drunk in drunks:
-        matplotlib.pyplot.scatter(drunk.x, drunk.y)
+       matplotlib.pyplot.scatter(drunk.x, drunk.y, 
+                                 c = float(drunk.drunk_level),
+                                 cmap = cmap,
+                                 vmin = drunk_level_lower,
+                                 vmax = drunk_level_higher)
+        
     
     """
     # Print how long it took to get all drunks home
