@@ -3,6 +3,9 @@
 Created on Tue Sep 28 14:23:02 2021
 
 @author: Tom Cunningham
+
+This module defines a drunk class that represents a drunk person leaving a pub.
+
 """
 import random
 
@@ -115,6 +118,7 @@ class Drunk():
         co-ordinate. In both cases, only set new x or y if it is not in a
         non-home building. Otherwise, alter other co-ordinate.
         """
+        
         # If not already at home, move up down left or right
         if not self.is_home:
             if self.drunk_level > 0:
@@ -195,7 +199,7 @@ class Drunk():
             
             # Add to environment to show route taken
             # If drunk doesn't move, will still add
-            self.town[self.y][self.x] += 3
+            self.town[self.y][self.x] += 1
             
             # If reached one of home coordinates, set to be at home
             if (self.x, self.y) in self.home_coords:
@@ -203,9 +207,12 @@ class Drunk():
       
     def sober_up(self):
         """
-        Decrease drunk level of drunk ond alters speed. Add x and y to history.
+        Decrease drunk_level of drunk ond alter speed. Add x and y to history.
         
-        Decrease
+        Decrease drunk_level by 1. If drunk_level is less than or equal to 
+        half of starting_drunk_level, set speed to be 3; if it is less than or
+        equal to a quarter of starting_drunk-level, set speed to be 5. If the
+        drunk is not at home, add the current co-ordinates to history.
         """
         if ((self.x, self.y) in self.history) and (self.drunk_level > 0):
             self.drunk_level -= 1

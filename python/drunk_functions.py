@@ -3,6 +3,11 @@
 Created on Thu Nov 25 01:24:10 2021
 
 @author: Tom Cunningham
+
+This module contains all of the functions used to model drunks leaving a pub
+and moving around a town. It is used by the drunk_model and 
+measure_drunks_moves modules.
+
 """
 
 import csv
@@ -321,7 +326,7 @@ def update(frame_number, drunks, fig, town,
     """
 
 # Define gen function that stops if all drunks home or if num_of_moves met
-def gen_function(num_of_moves, drunks):
+def gen_function(num_of_moves, drunks, town):
     """
     Generator function used in creating animation of drunks moving around town.
     Will continue to yield until either num_of_moves has been reached, or the
@@ -330,7 +335,8 @@ def gen_function(num_of_moves, drunks):
     
     If all drunks get home or the maximum number of iterations is met, a
     message will be printed stating how many drunks got home and in how many 
-    moves.
+    moves. An output txt file, town_out.txt, will also be produced, which shows
+    the final raster data of the town.
 
     Parameters
     ----------
@@ -339,6 +345,8 @@ def gen_function(num_of_moves, drunks):
     drunks : list
         List of 25 instances of drunk class, with ids that are multiples of 10
         between 10 and 250.
+    town : list
+        List of lists representing raster data of the town.
 
     Yields
     ------
@@ -351,6 +359,11 @@ def gen_function(num_of_moves, drunks):
         yield i
         i += 1
     else:
+        with open("town_out.txt", "w", newline = "") as f2:
+            writer = csv.writer(f2, delimiter = ",")
+            for row in town:
+                writer.writerow(row)
+
         if all([drunk.is_home for drunk in drunks]):
             # carry_on = False
             print("All drunks home in " + str(i) + " moves.")

@@ -3,9 +3,15 @@
 Created on Mon Sep 27 15:19:45 2021
 
 @author: Tom Cunningham
+
+This module runs an animation of drunks leaving a pub and moving around the
+town until they reach their home. It allows users to set a maximum number of 
+iterations of the model to run and limits for how drunk the drunks are. As well
+as an animation, the module produces a text output of the raster data of the
+town after the drunks have finished moving.
+
 """
 
-import csv
 import matplotlib.animation
 import matplotlib.pyplot
 import drunk_functions
@@ -100,16 +106,10 @@ animation = matplotlib.animation.FuncAnimation(
     fargs = (drunks, fig, town, drunk_level_lower, drunk_level_higher,),
     interval=1,
     repeat = False, 
-    frames = drunk_functions.gen_function(num_of_moves, drunks)
+    frames = drunk_functions.gen_function(num_of_moves, drunks, town)
     )
 
 matplotlib.pyplot.show()
-
-# Write town data to file
-with open("town_out.txt", "w", newline = "") as f2:
-            writer = csv.writer(f2, delimiter = ",")
-            for row in town:
-                writer.writerow(row)
 
 # Stop timer and print time taken
 end_time = timeit.default_timer()

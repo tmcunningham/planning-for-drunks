@@ -3,6 +3,11 @@
 Created on Tue Sep 28 14:23:02 2021
 
 @author: Tom Cunningham
+
+This module defines a simpler class of drunk than found in drunksframework. The
+drunk will speed up as it sobers up, but won't navigate to its house. The drunk
+can also move through buildings.
+
 """
 import random
 

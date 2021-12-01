@@ -3,6 +3,11 @@
 Created on Thu Nov 25 14:11:59 2021
 
 @author: Tom Cunningham
+
+This module uses the drunk_functions module to track how many moves it takes
+all drunks to get home at a range of drunk levels. The module will produce a
+boxplot of the results.
+
 """
 
 import drunk_functions
@@ -63,6 +68,7 @@ for drunk_level in drunk_levels:
 
 # Plot results as boxplots
 matplotlib.pyplot.boxplot(drunk_level_moves, positions = drunk_levels)
+matplotlib.pyplot.savefig("Number of moves boxplot.png")
 
 # Set end time
 end_time = timeit.default_timer()
