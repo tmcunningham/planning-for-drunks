@@ -50,7 +50,7 @@ As well as the animation, **drunk_model.py** will produce a text file output:
 
 ## Testing drunk levels (measure_drunks_moves.py)
 
-Another script, **measure_drunks_moves.py**, was created to measure how long it takes all drunks to get home when they start at different ```drunk_level```s. For each ```drunk_level``` in the list ```[10, 20, 50, 100, 200]```, the script will run 1000 iterations of the model with all drunks set at the current ```drunk_level```. The script will then produce and save a boxplot of the number of moves it took all the drunks to get home.
+Another script, **measure_drunks_moves.py**, was created to measure how long it takes all drunks to get home when they start at different ```drunk_level```s. For each ```drunk_level``` in the list ```[10, 20, 50, 100, 200]```, the script will run 1000 iterations of the model (without outputs) with all drunks set at the current ```drunk_level```. The script will then produce and save a boxplot of the number of moves it took all the drunks to get home.
 
 **Please note**: This script can take around 25 minutes to run.
 
