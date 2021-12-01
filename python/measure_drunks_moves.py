@@ -17,9 +17,6 @@ import timeit
 # Set start time to time programme
 start_time = timeit.default_timer()
 
-# Set maximum number of moves (if this is too low it will affect results)
-max_moves = 50000000000
-
 # Import town data
 town = drunk_functions.import_town("drunk.plan")
 
@@ -53,17 +50,17 @@ for drunk_level in drunk_levels:
                                                front_door_coords, back_door_coords,
                                                drunk_level_lower, 
                                                drunk_level_higher)
-        
-        for i in range(max_moves):
-    
+        j = 0
+        while not all([drunk.is_home for drunk in drunks]):
             for drunk in drunks:
                 drunk.move()
                 drunk.sober_up()
-            
-            if all([drunk.is_home for drunk in drunks]):
-                moves.append(i)
-                break
-
+            j += 1
+        else:
+            moves.append(j)
+    
+        print("Drunk level " + str(drunk_level) + ": " + str(i/(iterations-1)))
+    
     drunk_level_moves.append(moves)
 
 # Plot results as boxplots
