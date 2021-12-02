@@ -112,16 +112,20 @@ class Drunk():
         """
         Move the drunk according to whether or not their drunk level is 0.
         
-        If drunk level is > 0 (i.e. still drunk) move drunk randomly up, down,
-        left or right. If drunk level is 0 (i.e. relatively sober) move drunk
-        towards their front door, choosing randomly whether to alter x or y
-        co-ordinate. In both cases, only set new x or y if it is not in a
-        non-home building. Otherwise, alter other co-ordinate.
+        If drunk level is > 0 (i.e. still drunk) add one to environment at 
+        position and then move drunk randomly up, down, left or right. If 
+        drunk level is 0 (i.e. relatively sober) move drunk towards their 
+        front door, choosing randomly whether to alter x or yco-ordinate. In 
+        both cases, only set new x or y if it is not in a non-home building. 
+        Otherwise, alter other co-ordinate.
         """
         
         # If not already at home, move up down left or right
         if not self.is_home:
             if self.drunk_level > 0:
+                # Add to environment to show route taken
+                self.town[self.y][self.x] += 1
+                
                 # Call random once so using the same random number - noticed a bug
                 random_num = random.random()
                 
@@ -197,10 +201,6 @@ class Drunk():
             if (self.x, self.y) in self.other_building_coords:
                 print(str(self.id), "in a building")
             
-            # Add to environment to show route taken
-            # If drunk doesn't move, will still add
-            self.town[self.y][self.x] += 1
-            
             # If reached one of home coordinates, set to be at home
             if (self.x, self.y) in self.home_coords:
                 self.is_home = True
@@ -209,17 +209,20 @@ class Drunk():
         """
         Decrease drunk_level of drunk ond alter speed. Add x and y to history.
         
-        Decrease drunk_level by 1. If drunk_level is less than or equal to 
-        half of starting_drunk_level, set speed to be 3; if it is less than or
-        equal to a quarter of starting_drunk-level, set speed to be 5. If the
-        drunk is not at home, add the current co-ordinates to history.
+        Decrease drunk_level by 1 if this position is in history. If 
+        drunk_level is less than or equal to half of starting_drunk_level, set 
+        speed to be 3; if it is less than or equal to a quarter of 
+        starting_drunk-level, set speed to be 5. If the drunk is not at home, 
+        add the current co-ordinates to history.
         """
         if ((self.x, self.y) in self.history) and (self.drunk_level > 0):
             self.drunk_level -= 1
-            if self.drunk_level <= self.start_drunk_level / 2:
-                self.speed = 3
-            elif self.drunk_level <= self.start_drunk_level/ 4:
-                self.speed = 5
+        
+        if (self.drunk_level <= self.start_drunk_level / 4) or \
+            (self.drunk_level == 0):
+            self.speed = 5
+        elif self.drunk_level <= self.start_drunk_level/ 2:
+            self.speed = 3
         
         if not self.is_home: 
             self.history.append((self.x, self.y))

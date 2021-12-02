@@ -4,7 +4,8 @@ Created on Wed Dec  1 17:27:15 2021
 
 @author: Tom Cunningham
 
-This module tests the functions in drunk_functions using the unittest module.
+This module tests the functions in drunk_functions and drunksframework using 
+the unittest module.
 
 """
 
@@ -33,11 +34,17 @@ class TestCatchInput(unittest.TestCase):
             
     def test_default(self):
         """
-        Test that when input can't be parsed as desired type, default is used.
+        Test that when input can't be parsed as desired type, default is used
+        and printed message is as expected.
         """
-        with unittest.mock.patch('builtins.input', return_value = "a"):
-            output = drunk_functions.catch_input(1, int)
-            self.assertEqual(output, 1)
+        with unittest.mock.patch('sys.stdout', new = StringIO()) as mock_out:
+            with unittest.mock.patch('builtins.input', return_value = "a"):
+                output = drunk_functions.catch_input(1, int)
+                self.assertEqual(output, 1)
+                # 3 "invalid" messages as 3 attempts to input invalid value
+                self.assertEqual(mock_out.getvalue(), 
+                                 "Invalid input.\nInvalid input.\nInvalid" + 
+                                 " input.\nDefault value used.\n")
             
 class TestImportTown(unittest.TestCase):
     def test_dimensions(self):
@@ -135,7 +142,7 @@ class TestCreateDrunks(unittest.TestCase):
         output = drunk_functions.create_drunks(town, building_coords,
                                                front_door, back_door,
                                                10, 100)
-        self.assertEquals(len(output), 25)
+        self.assertEqual(len(output), 25)
         
     def test_class(self):
         """
@@ -210,13 +217,73 @@ class TestDrunkMove(unittest.TestCase):
         building_coords = drunk_functions.get_building_coords(town)
         drunk = drunksframework.Drunk(10, 50, 50, town, building_coords, 50)
         
-        start_town_sum = sum([c for rowlist in town for c in rowlist])
+        # Town at drunk's old position increased by 1
+        a = town[50][50]
         drunk.move()
-        end_town_sum = sum([c for rowlist in town for c in rowlist])
+        b = town[50][50]
+        self.assertEqual(a, b-1)
         
-        self.assertEqual(end_town_sum - 1, start_town_sum)
+    def test_town_unchanged(self):
+        """
+        Test that town is currently unchanged in drunk's new posiiton (old
+        position should be only change to town).
+        """
+        town = drunk_functions.import_town("drunk.plan")
+        building_coords = drunk_functions.get_building_coords(town)
+        drunk = drunksframework.Drunk(10, 50, 50, town, building_coords, 50)
+        drunk.move()
+        self.assertEqual(town[drunk.y][drunk.x], 0)
         
+class TestDrunkSoberUp(unittest.TestCase):
+    def test_drunk_level(self):
+        """
+        Test that a drunk's drunk_level decreases by 1.
+        """
+        town = drunk_functions.import_town("drunk.plan")
+        building_coords = drunk_functions.get_building_coords(town)
+        drunk = drunksframework.Drunk(10, 50, 50, town, building_coords, 50)
+        # Add current coord to history so drunk will sober up
+        drunk.history.append((50,50))
+        drunk.sober_up()
+        self.assertEqual(drunk.drunk_level, 49)
     
+    def test_speed_change(self):
+        """
+        Test that drunk will change speed as it sobers up.
+        """
+        town = drunk_functions.import_town("drunk.plan")
+        building_coords = drunk_functions.get_building_coords(town)
+        drunk = drunksframework.Drunk(10, 50, 50, town, building_coords, 50)
         
+        drunk.drunk_level = 25
+        drunk.sober_up()
+        self.assertEqual(drunk.speed, 3)
+        
+        drunk.drunk_level = 10
+        drunk.sober_up()
+        self.assertEqual(drunk.speed, 5)
     
+    def test_history(self):
+        """
+        Test that drunk's position is added to history.
+        """
+        town = drunk_functions.import_town("drunk.plan")
+        building_coords = drunk_functions.get_building_coords(town)
+        drunk = drunksframework.Drunk(10, 50, 50, town, building_coords, 50)
+        
+        drunk.sober_up()
+        self.assertIn((50,50), drunk.history)
     
+    def test_sober_drunk(self):
+        """
+        Test that a drunk with drunk_level of 0 is handled as expected.
+        """
+        town = drunk_functions.import_town("drunk.plan")
+        building_coords = drunk_functions.get_building_coords(town)
+        drunk = drunksframework.Drunk(10, 50, 50, town, building_coords, 0)
+        
+        drunk.sober_up()
+        self.assertEqual(drunk.speed, 5)
+        self.assertEqual(drunk.drunk_level, 0)
+        self.assertIn((50,50), drunk.history)
+        
