@@ -368,7 +368,7 @@ def gen_function(num_of_moves, drunks, town):
             # carry_on = False
             print("All drunks home in " + str(i) + " moves.")
         else:
-            print(str(sum([d.is_home for d in drunks])), " drunks home in " + 
+            print(str(sum([d.is_home for d in drunks])) + " drunks home in " + 
                   str(i) + " moves.")
         
         
