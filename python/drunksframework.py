@@ -122,11 +122,12 @@ class Drunk():
         
         # If not already at home, move up down left or right
         if not self.is_home:
-            if self.drunk_level > 0:
-                # Add to environment to show route taken
-                self.town[self.y][self.x] += 1
-                
-                # Call random once so using the same random number - noticed a bug
+            # Add to environment to show route taken
+            self.town[self.y][self.x] += 1
+            
+            # If drunk is not sober move in random direction
+            if self.drunk_level > 0:                
+                # Call random once so using the same random number
                 random_num = random.random()
                 
                 if random_num < 0.25:
@@ -143,10 +144,10 @@ class Drunk():
                     new_y = self.y
                 
                 
-                
+            # If drunk_level == 0, move drunk towards home
+            # Randomise whether to change x or y coord first to help with issue
+            # of drunks getting stuck at buildings
             else:
-                # If drunk_level == 0, move drunk towards home
-                # Randomise whether to change x or y coord first
                 if random.random() < 0.5:
                     if  self.front_door[1] > self.y:
                         new_y = (self.y + self.speed) % len(self.town)
@@ -161,10 +162,10 @@ class Drunk():
                         new_x = (self.x - self.speed) % len(self.town[0])
                         new_y = self.y
                         
-                else:
+                else:                  
                     if self.front_door[0] > self.x:
                         new_x = (self.x + self.speed) % len(self.town[0])
-                        new_y = self.y 
+                        new_y = self.y
                     elif self.front_door[0] < self.x:
                         new_x = (self.x - self.speed) % len(self.town[0])
                         new_y = self.y 
@@ -175,29 +176,26 @@ class Drunk():
                         new_y = (self.y - self.speed) % len(self.town)
                         new_x = self.x
             
-            
-            # Update x and y if they are not building co-ordinates
-            # If they are, start to go around the building
-                        
-            
+            # Update x and y if they are not building co-ordinates            
             if (new_x, new_y) not in self.other_building_coords:
                 (self.x, self.y) = new_x, new_y
+            
+            # If new x coordinate is in a building, change y instead
             elif (new_x, self.y) in self.other_building_coords:
-                # self.y = (self.y + self.speed) % len(self.town)
-                
                 if random.random() > 0.5:
                     self.y = (self.y + self.speed) % len(self.town)
-                else:
+                else: 
                     self.y = (self.y - self.speed) % len(self.town)
-                
+            
+            # If new y coord is in a building, change x instead
             elif (self.x, new_y) in self.other_building_coords:
-                # self.x = (self.x + self.speed) % len(self.town)
-                
                 if random.random() > 0.5:
                     self.x = (self.x + self.speed) % len(self.town)
                 else: 
                     self.x = (self.x - self.speed) % len(self.town)
-                
+            
+            # Print a message if drunk getsstuck in a building
+            # This shouldn't happen, but just in case
             if (self.x, self.y) in self.other_building_coords:
                 print(str(self.id), "in a building")
             

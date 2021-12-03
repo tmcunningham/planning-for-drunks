@@ -49,7 +49,7 @@ except:
         "Please specify an upper limit for drunk level as an integer: ",
         "Input not recognised as integer.",
         str("Upper drunk level set to default of ") +
-            str(drunk_level_lower + 50)
+            str(drunk_level_lower + 200)
         )
 
 # Use smallest value as lower level and largest as upper
