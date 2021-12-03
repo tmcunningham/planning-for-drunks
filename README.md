@@ -1,15 +1,16 @@
 # Programming for Social Science Assessment 2: Planning for Drunks
 
-This repository contains code to run an agent based model that simulates drunks leaving a pub and trying to get home. This code was produced for the second assessment of the GEOG5995 module taught by the University of Leeds.
+This repository contains code to run an agent based model that simulates drunks leaving a pub and trying to get home. Initially, the drunks cannot remember where their house is and move randomly, but they gradually sober up and begin to move towards their home. This code was produced for the second assessment of the GEOG5995 module taught by the University of Leeds.
 
 ## Contents
 
 Within the **python** folder, this repository contains the following:
-- **drunk_functions.py:** file that contains the functions needed to run the model
-- **drunksframework.py:** file containing the drunk class
-- **drunk_model.py** file that uses the functions from durnk_functions.py to create an animation of the model and write the output to a txt file
-- **measure_drunks_moves.py** file that measures how many iterations it takes for all drunks to get home with different ```drunk_level```s and plots the results as a boxplot
-- **drunk.plan:** raster data file with the drunks' homes and the pub
+- **drunk_functions.py**: file that contains the functions needed to run the model
+- **drunksframework.py**: file containing the drunk class
+- **drunk_model.py**: file that uses the functions from drunk_functions.py to create an animation of the model and write the output to a txt file
+- **measure_drunks_moves.py**: file that measures how many iterations it takes for all drunks to get home with different ```drunk_level```s and plots the results as a boxplot
+- **drunk.plan**: raster data file with the drunks' homes and the pub
+- **test_drunk_functions.py**: module with unit tests for functions in drunk_functions.py and mmethods in drunksframework.py
 
 ## About the animation (drunk_model.py)
 
@@ -48,7 +49,7 @@ The model will run until either of the following conditions is met:
 As well as the animation, **drunk_model.py** will produce a text file output:
 - **town_out.txt**: an updated version of the **drunk.plan** raster file, with 1 added to each (x,y) co-ordinate for each time a drunk has visited it.
 
-## Testing drunk levels (measure_drunks_moves.py)
+## Measuring drunk levels (measure_drunks_moves.py)
 
 Another script, **measure_drunks_moves.py**, was created to measure how long it takes all drunks to get home when they start at different ```drunk_level```s. For each ```drunk_level``` in the list ```[10, 20, 50, 100, 200]```, the script will run 1000 iterations of the model (without outputs) with all drunks set at the current ```drunk_level```. The script will then produce and save a boxplot of the number of moves it took all the drunks to get home.
 
