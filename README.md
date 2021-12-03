@@ -25,6 +25,8 @@ When it is run, the file **drunk_model.py** runs the following stages and produc
   - moves each drunk (randomly if they are still drunk, or towards their house if their ```drunk_level``` is 0) and adds 1 to the ```town``` raster data at each drunk's location
   - sobers each drunk up (reduces the ```drunk_level``` by 1) if they have visited their current co-ordinates before
 
+In the animation, the dots represent the drunks and the squares are the buildings. The drunks will change colour as they get less drunk - red is completely sober and blue is the most drunk they can be.
+
 ### How to run the model
 
 The user can run the model and produce the animation from the command line by using the following line of code in the directory where **drunk_model.py**, **drunk_functions.py**, **drunksframework.py** and **drunk.plan** are saved:
@@ -34,7 +36,7 @@ The user can run the model and produce the animation from the command line by us
 The arguments are:
 - ```[num_of_moves] = 5000```: maximum number of iterations
 - ```[drunk_level_lower] = 20```: minimum value for each drunk's starting ```drunk_level```
-- ```[drunk_level_higher] = 70```: maximum value for each drunk's starting ```drunk_level```
+- ```[drunk_level_higher] = [drunk_level_lower] + 200```: maximum value for each drunk's starting ```drunk_level```
 
 Each drunk's starting ```drunk_level``` will be chosen at random between the lower and higher levels inclusive (so if the numbers are the same, all drunks will start at the same ```drunk_level```). If these arguments aren't provided (or only some are), the user will be prompted to input them 3 times before the programme uses the default values.
 
