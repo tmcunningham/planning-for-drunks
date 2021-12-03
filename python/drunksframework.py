@@ -90,7 +90,7 @@ class Drunk():
         self.history = []
         self.drunk_level = drunk_level
         self.start_drunk_level = drunk_level
-        self.speed = 1
+        self._speed = 1
         
     def get_x(self):
         return self._x
@@ -104,8 +104,15 @@ class Drunk():
     def set_y(self, value):
         self._y = value
     
+    def get_speed(self):
+        return self._speed
+    
+    def set_speed(self, value):
+        self._speed = value
+    
     x = property(get_x, set_x, "x property")
     y = property(get_y, set_y, "y property")
+    speed = property(get_speed, set_speed, "speed property")
     
     # Move up down left or right (not diagonally)
     def move(self):
@@ -194,8 +201,8 @@ class Drunk():
                 else: 
                     self.x = (self.x - self.speed) % len(self.town)
             
-            # Print a message if drunk getsstuck in a building
-            # This shouldn't happen, but just in case
+            # Print a message if drunk gets stuck in a building
+            # This shouldn't happen, but was used for testing
             if (self.x, self.y) in self.other_building_coords:
                 print(str(self.id), "in a building")
             
@@ -218,9 +225,9 @@ class Drunk():
         
         if (self.drunk_level <= self.start_drunk_level / 4) or \
             (self.drunk_level == 0):
-            self.speed = 5
+            self._speed = 5
         elif self.drunk_level <= self.start_drunk_level/ 2:
-            self.speed = 3
+            self._speed = 3
         
         if not self.is_home: 
             self.history.append((self.x, self.y))
