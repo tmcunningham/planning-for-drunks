@@ -183,21 +183,21 @@ class Drunk():
             if (new_x, new_y) not in self.other_building_coords:
                 (self.x, self.y) = new_x, new_y
             elif (new_x, self.y) in self.other_building_coords:
-                self.y = (self.y + self.speed) % len(self.town)
-                """
+                # self.y = (self.y + self.speed) % len(self.town)
+                
                 if random.random() > 0.5:
                     self.y = (self.y + self.speed) % len(self.town)
                 else:
                     self.y = (self.y - self.speed) % len(self.town)
-                """
+                
             elif (self.x, new_y) in self.other_building_coords:
-                self.x = (self.x + self.speed) % len(self.town)
-                """
+                # self.x = (self.x + self.speed) % len(self.town)
+                
                 if random.random() > 0.5:
                     self.x = (self.x + self.speed) % len(self.town)
                 else: 
                     self.x = (self.x - self.speed) % len(self.town)
-                """
+                
             if (self.x, self.y) in self.other_building_coords:
                 print(str(self.id), "in a building")
             

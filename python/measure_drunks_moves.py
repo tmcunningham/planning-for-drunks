@@ -65,7 +65,7 @@ for drunk_level in drunk_levels:
 
 # Plot results as boxplots
 matplotlib.pyplot.boxplot(drunk_level_moves, positions = drunk_levels)
-matplotlib.pyplot.savefig("Number of moves boxplot.png")
+matplotlib.pyplot.savefig("plots/Number of moves boxplot.png")
 
 # Set end time
 end_time = timeit.default_timer()
