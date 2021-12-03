@@ -36,7 +36,7 @@ The user can run the model and produce the animation from the command line by us
 The arguments are:
 - ```[num_of_moves] = 5000```: maximum number of iterations
 - ```[drunk_level_lower] = 20```: minimum value for each drunk's starting ```drunk_level```
-- ```[drunk_level_higher] = [drunk_level_lower] + 50```: maximum value for each drunk's starting ```drunk_level```
+- ```[drunk_level_higher] = [drunk_level_lower] + 200```: maximum value for each drunk's starting ```drunk_level```
 
 Each drunk's starting ```drunk_level``` will be chosen at random between the lower and higher levels inclusive (so if the numbers are the same, all drunks will start at the same ```drunk_level```). If these arguments aren't provided (or only some are), the user will be prompted to input them 3 times before the programme uses the default values.
 
