@@ -29,7 +29,7 @@ In the animation, the dots represent the drunks and the squares are the building
 
 ### How to run the model
 
-The user can run the model and produce the animation from the command line by using the following line of code in the directory where **drunk_model.py**, **drunk_functions.py**, **drunksframework.py** and **drunk.plan** are saved:
+If python is installed, the user can run the model and produce the animation from the command line by using the following line of code in the directory where **drunk_model.py**, **drunk_functions.py**, **drunksframework.py** and **drunk.plan** are saved:
 
 ```python drunk_model.py [num_of_moves] [drunk_level_lower] [drunk_level_higher]```
 
@@ -53,9 +53,15 @@ As well as the animation, **drunk_model.py** will produce a text file output:
 
 ## Measuring drunk levels (measure_drunks_moves.py)
 
-Another script, **measure_drunks_moves.py**, was created to measure how long it takes all drunks to get home when they start at different ```drunk_level```s. For each ```drunk_level``` in the list ```[10, 20, 50, 100, 200]```, the script will run 1000 iterations of the model (without outputs) with all drunks set at the current ```drunk_level```. The script will then produce and save a boxplot of the number of moves it took all the drunks to get home.
+Another script, **measure_drunks_moves.py**, was created to measure how long it takes all drunks to get home when they start at different ```drunk_level```s. For each ```drunk_level``` in the list ```[10, 20, 50, 100, 200]```, the script will run 1000 iterations of the model (without outputs) with all drunks set at the current ```drunk_level```. The script will then produce and save a boxplot of the number of moves it took all the drunks to get home. For each iteration, a message will be printed displaying the ```drunk_level``` currently being used and the percentage of all iterations the script has completed running for that ```drunk_level```.
 
 **Please note**: This script can take around 25 minutes to run.
+
+If Pyhton is installed, this script can be run by running the following in the command line within the same directory as **measure_drunks_moves.py**, **drunk_functions.py**, **drunksframework.py** and **drunk.plan**:
+
+```
+python measure_drunks_moves.py
+```
 
 ## License
 
