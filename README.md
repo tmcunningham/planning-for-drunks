@@ -33,7 +33,7 @@ The user can run the model and produce the animation from the command line by us
 
 ```python drunk_model.py [num_of_moves] [drunk_level_lower] [drunk_level_higher]```
 
-The arguments are:
+Where the arguments in brackets can be replaced by user inputs. These arguments are (default values given after equals sign):
 - ```[num_of_moves] = 5000```: maximum number of iterations
 - ```[drunk_level_lower] = 20```: minimum value for each drunk's starting ```drunk_level```
 - ```[drunk_level_higher] = [drunk_level_lower] + 200```: maximum value for each drunk's starting ```drunk_level```
