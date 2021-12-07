@@ -89,13 +89,6 @@ def import_town(data_file):
     
     return town
     
-    # Check data has correct dimensions
-    #len(town)
-    #len(town[0])
-    
-    # Plot data        
-    # matplotlib.pyplot.imshow(town)
-    
 def get_building_coords(town):
     """
     Generates a dictionary of all (x,y) co-ordinates that are within buildings

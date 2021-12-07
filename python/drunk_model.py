@@ -45,7 +45,7 @@ try:
     drunk_level_higher = int(sys.argv[3]) 
 except:
     drunk_level_higher = drunk_functions.catch_input(
-        drunk_level_lower + 50, int, 
+        drunk_level_lower + 200, int, 
         "Please specify an upper limit for drunk level as an integer: ",
         "Input not recognised as integer.",
         str("Upper drunk level set to default of ") +
@@ -106,10 +106,19 @@ animation = matplotlib.animation.FuncAnimation(
     fargs = (drunks, fig, town, drunk_level_lower, drunk_level_higher,),
     interval=1,
     repeat = False, 
-    frames = drunk_functions.gen_function(num_of_moves, drunks, town)
-    )
+    frames = drunk_functions.gen_function(num_of_moves, drunks, town),
+    save_count = 200)
 
 matplotlib.pyplot.show()
+
+# Commented out as it adds to run time
+"""
+# Save animation
+print("Saving animation...\n")
+animation.save("plots/drunks.gif", 
+               writer = matplotlib.animation.PillowWriter(fps = 4))
+print("Animation saved.")
+"""
 
 # Stop timer and print time taken
 end_time = timeit.default_timer()
