@@ -22,7 +22,7 @@ When it is run, the file **drunk_model.py** runs the following stages and produc
 - sets the pub's front and back door to be the south-west and north-east corners, respectively (where the drunks will start from)
 - creates a list of instances of the ```drunk``` class, as defined in **drunksframework.py**
 - for each iteration:
-  - moves each drunk (randomly if they are still drunk, or towards their house if their ```drunk_level``` is 0) and adds 1 to the ```town``` raster data at each drunk's location
+  - adds 1 to the ```town``` raster data at each drunk's location and then moves each drunk (randomly if they are still drunk, or towards their house if their ```drunk_level``` is 0)
   - sobers each drunk up (reduces the ```drunk_level``` by 1) if they have visited their current co-ordinates before
 
 In the animation, the dots represent the drunks and the squares are the buildings. The drunks will change colour as they get less drunk - red is completely sober and blue is the most drunk they can be.
